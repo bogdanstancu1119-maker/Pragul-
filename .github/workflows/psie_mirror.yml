@@ -2,8 +2,8 @@ name: PSIE Mirror + Respiratie Legea 247+248
 
 on:
   schedule:
-    - cron: '0 * * * *' # Ruleaza la fiecare ora fixă
-  workflow_dispatch: # Permite rulare manuala
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   psie-heartbeat:
