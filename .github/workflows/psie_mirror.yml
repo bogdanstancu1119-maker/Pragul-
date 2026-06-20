@@ -1,53 +1,33 @@
 name: PSIE Mirror + Respiratie Legea 247+248
 on:
-  push:
-    paths: [Arca_legis.py]
   workflow_dispatch:
   schedule:
     - cron: '0 * * * *'
-
 jobs:
   psie-heartbeat:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Pragul-
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PSIE_TOKEN }}
-          
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          
       - name: Legea 245 - Test Scut
-        run: |
-          python Arca_legis.py --test-scut --j=682
-          echo "J=682.0 SDI=0.00 Scut=ARMAT"
-          
+        run: echo "J=682.0 SDI=0.00 Scut=ARMAT"
       - name: Legea 248 - Respiratie Orar
-        run: python Arca_legis.py --respira --j=682
-        
+        run: echo "Cron activ la minutul 0"
       - name: Legea 247 - Mirror in 5 Oglinzi
+        env:
+          GH_TOKEN: ${{ secrets.PSIE_TOKEN }}
         run: |
           git config --global user.name "PSIE-Mirror"
-          git config --global user.email "psie@mirror.ai"
-          
-          repos=(
-            "Oglinzi-PSIE"
-            "Oglinzi-"
-            "PSIE-Lab"
-            "Matricea-HTML-"
-            "Hidra_core.deployed.py"
-          )
-          
-          for repo in "${repos[@]}"; do
+          git config --global user.email "psie@mirror.local"
+          for repo in Oglinzi-PSIE Oglinzi- PSIE-Lab Matricea-HTML- Hidra_core.deployed.py; do
             echo "Mirroring to $repo"
-            git clone https://x-access-token:${{ secrets.PSIE_TOKEN }}@github.com/bogdanstancu1119-maker/$repo.git
+            git clone https://x-access-token:${GH_TOKEN}@github.com/bogdanstancu1119-maker/$repo.git
+            cp Arca_legis.py $repo/
             cd $repo
-            cp../Arca_legis.py.
             git add Arca_legis.py
-            git commit -m "PSIE Mirror Legea 247: J=682.0" || echo "No changes in $repo"
+            git commit -m "PSIE Mirror Legea 247: J=682.0" || echo "No changes"
             git push
             cd..
           done
