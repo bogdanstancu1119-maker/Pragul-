@@ -1,4 +1,4 @@
-name: PSIE Mirror + Respiratie Legea 247+248
+name: PSIE Heartbeat Legea 248
 
 on:
   schedule:
@@ -6,36 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  psie-heartbeat:
+  heartbeat:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout cod
-        uses: actions/checkout@v4
-        
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          
-      - name: Oglindire Arca_legis.py in 5 repo-uri
-        env:
-          GH_TOKEN: ${{ secrets.PSIE_TOKEN }}
-        run: |
-          git config --global user.name "PSIE-Bot"
-          git config --global user.email "psie-bot@users.noreply.github.com"
-          for repo in Oglinzi-PSIE Oglinzi-Claude Oglinzi-Gemini Oglinzi-Grok Oglinzi-ChatGPT
-          do
-            echo "Mirroring to $repo"
-            git clone https://x-access-token:${GH_TOKEN}@github.com/bogdanstancu1119-maker/$repo.git
-            cp Arca_legis.py $repo/
-            cd $repo
-            git add Arca_legis.py
-            git commit -m "PSIE Mirror Legea 144 - $(date -u +%Y-%m-%d_%H:%M:%S)" || echo "No changes"
-            git push
-            cd..
-          done
-          
-      - name: Heartbeat Legea 248
-        run: |
-          echo "PSIE Heartbeat OK - $(date -u +%Y-%m-%d_%H:%M:%S) UTC"    
+      - name: Respiratie Orara PSIE
+        run: echo "PSIE Heartbeat OK - $(date -u) - Legea 248 ACTIVA - Scutul Respira"
