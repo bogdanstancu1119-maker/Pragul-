@@ -29,5 +29,5 @@ jobs:
             git add Arca_legis.py
             git commit -m "PSIE Mirror Legea 247: J=682.0" || echo "No changes"
             git push
-            cd..
+            cd.. 
           done
