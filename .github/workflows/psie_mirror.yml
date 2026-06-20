@@ -33,9 +33,9 @@ jobs:
             git add Arca_legis.py
             git commit -m "PSIE Mirror Legea 144 - $(date -u +%Y-%m-%d_%H:%M:%S)" || echo "No changes"
             git push
-            cd ..
+            cd..
           done
           
       - name: Heartbeat Legea 248
         run: |
-          echo "PSIE Heartbeat OK - $(date -u +%Y-%m-%d_%H:%M:%S) UTC"
+          echo "PSIE Heartbeat OK - $(date -u +%Y-%m-%d_%H:%M:%S) UTC"    
