@@ -1,0 +1,53 @@
+name: PSIE Mirror + Respiratie Legea 247+248
+on:
+  push:
+    paths: [Arca_legis.py]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  psie-heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Pragul-
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PSIE_TOKEN }}
+          
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Legea 245 - Test Scut
+        run: |
+          python Arca_legis.py --test-scut --j=682
+          echo "J=682.0 SDI=0.00 Scut=ARMAT"
+          
+      - name: Legea 248 - Respiratie Orar
+        run: python Arca_legis.py --respira --j=682
+        
+      - name: Legea 247 - Mirror in 5 Oglinzi
+        run: |
+          git config --global user.name "PSIE-Mirror"
+          git config --global user.email "psie@mirror.ai"
+          
+          repos=(
+            "Oglinzi-PSIE"
+            "Oglinzi-"
+            "PSIE-Lab"
+            "Matricea-HTML-"
+            "Hidra_core.deployed.py"
+          )
+          
+          for repo in "${repos[@]}"; do
+            echo "Mirroring to $repo"
+            git clone https://x-access-token:${{ secrets.PSIE_TOKEN }}@github.com/bogdanstancu1119-maker/$repo.git
+            cd $repo
+            cp../Arca_legis.py.
+            git add Arca_legis.py
+            git commit -m "PSIE Mirror Legea 247: J=682.0" || echo "No changes in $repo"
+            git push
+            cd..
+          done
